@@ -1,0 +1,328 @@
+/* styles.css */
+
+:root {
+  --bg-color: #000;
+  --text-color: #fff;
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --section-bg: rgba(0, 0, 0, 0.6);
+  --highlight-color: #ffffff;
+  --border-color: #ffffff33;
+  --hover-bg: rgba(255, 255, 255, 0.3);
+  --font-secondary: #ddd;
+  --skill-bg: rgba(255, 255, 255, 0.08);
+  --skill-text: #fff;
+}
+
+.light-theme {
+  --bg-color: #f5f5f5;
+  --text-color: #000;
+  --overlay-bg: rgba(255, 255, 255, 0.8);
+  --section-bg: rgba(255, 255, 255, 0.7);
+  --highlight-color: #000000;
+  --border-color: #00000033;
+  --hover-bg: rgba(0, 0, 0, 0.1);
+  --font-secondary: #444;
+  --skill-bg: rgba(0, 0, 0, 0.05);
+  --skill-text: #000;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color);
+  scroll-behavior: smooth;
+  background-color: var(--bg-color);
+  background-image: url('e7d7c722-ecda-44e6-800f-732d067c4fc1.png');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
+}
+
+section, header, footer {
+  background: var(--section-bg);
+  padding: 60px 20px;
+  backdrop-filter: blur(4px);
+  border-radius: 16px;
+  margin: 20px;
+}
+
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero .overlay {
+  background-color: var(--overlay-bg);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px var(--border-color);
+  transition: transform 0.3s ease;
+}
+
+.hero h1 {
+  font-size: 56px;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, var(--highlight-color), #aaa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  font-size: 24px;
+  margin-bottom: 40px;
+  color: var(--font-secondary);
+}
+
+.socials {
+  margin-top: 50px;
+}
+
+.socials a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 22px;
+  padding: 10px 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.socials a:hover {
+  background-color: var(--highlight-color);
+  color: var(--bg-color);
+  transform: scale(1.1);
+  box-shadow: 0 0 10px var(--border-color);
+}
+
+.about, .experience, .skills, .motivation {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-top: 40px;
+}
+
+p, li {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--font-secondary);
+}
+
+/* Стилі для списку навичок */
+.skills-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 0;
+  list-style-type: none;
+  margin-top: 20px;
+}
+
+.skills-list li {
+  padding: 15px;
+  border-radius: 8px;
+  background-color: var(--skill-bg);
+  text-align: center;
+  transition: transform 0.3s, background-color 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border-color);
+  color: var(--skill-text);
+}
+
+.skills-list li:hover {
+  transform: translateY(-5px);
+  background-color: var(--hover-bg);
+}
+
+.skill-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: var(--skill-text);
+}
+
+.skill-category {
+  display: block;
+  font-size: 0.8em;
+  opacity: 0.7;
+  margin-top: 5px;
+  color: var(--skill-text);
+}
+
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.experience-item img {
+  max-width: 80px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 5px var(--border-color));
+}
+
+.experience-item h3 {
+  margin: 5px 0;
+  font-size: 20px;
+  color: var(--text-color);
+}
+
+.experience-item p {
+  font-size: 16px;
+  color: var(--font-secondary);
+}
+
+.motivation p {
+  text-align: center;
+  font-style: italic;
+  font-size: 22px;
+  margin-top: 30px;
+  color: var(--font-secondary);
+}
+
+footer {
+  text-align: center;
+  font-size: 14px;
+  padding: 30px 20px;
+  color: var(--font-secondary);
+}
+
+footer a {
+  color: var(--text-color);
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #1e90ff;
+}
+
+/* Ефект світіння тексту */
+.glow-text {
+  position: relative;
+  display: inline-block;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: background 0.1s;
+}
+
+/* Для світлої теми */
+body.light-theme .glow-text {
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Для елементів списку навичок, щоб текст був видимим завжди */
+.skills-list li.glow-text {
+  background-clip: unset;
+  color: var(--skill-text);
+  -webkit-text-fill-color: var(--skill-text);
+}
+
+.skills-list li.glow-text span {
+  background: unset;
+  color: var(--skill-text);
+  -webkit-text-fill-color: var(--skill-text);
+}
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 36px;
+  }
+  .hero p {
+    font-size: 18px;
+  }
+  .socials a {
+    display: inline-block;
+    margin: 10px;
+    font-size: 18px;
+    padding: 8px 14px;
+  }
+  .skills-list {
+    grid-template-columns: 1fr;
+  }
+  h2 {
+    font-size: 28px;
+  }
+}
+
+/* Тема-перемикач */
+.theme-toggle, .language-toggle {
+  position: fixed;
+  top: 20px;
+  z-index: 100;
+  background: none;
+  border: 2px solid var(--text-color);
+  color: var(--text-color);
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  font-size: 18px;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover, .language-toggle:hover {
+  background-color: var(--highlight-color);
+  color: var(--bg-color);
+}
+
+.theme-toggle {
+  right: 70px;
+}
+
+.language-toggle {
+  right: 20px;
+}
+
+.language-menu {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  background: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  z-index: 99;
+}
+
+.language-menu button {
+  padding: 10px;
+  border: none;
+  background: none;
+  color: var(--text-color);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+.language-menu button:hover {
+  background-color: var(--hover-bg);
+}

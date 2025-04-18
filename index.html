@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    /* Базові стилі для ефекту світіння тексту */
+    .glow-text {
+      position: relative;
+      display: inline-block;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.3) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transition: background 0.1s;
+    }
+    
+    /* Стилі для світлої теми */
+    body.light-theme .glow-text {
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.3) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    /* Фіксовані кнопки та меню вибору мови */
+    .theme-toggle, .language-toggle {
+      position: fixed;
+      top: 20px;
+      padding: 10px;
+      border: none;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      cursor: pointer;
+      z-index: 100;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    
+    .theme-toggle {
+      right: 20px;
+    }
+    
+    .language-toggle {
+      right: 70px;
+    }
+    
+    body.light-theme .theme-toggle, 
+    body.light-theme .language-toggle {
+      background-color: rgba(255, 255, 255, 0.8);
+      color: black;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Стилі для меню вибору мови */
+    .language-menu {
+      display: none;
+      position: fixed;
+      top: 70px;
+      right: 20px;
+      flex-direction: column;
+      gap: 5px;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 100;
+    }
+    
+    .language-menu button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 5px 10px;
+      text-align: center;
+    }
+    
+    .language-menu button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    body.light-theme .language-menu {
+      background-color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+    
+    body.light-theme .language-menu button {
+      color: black;
+    }
+    
+    body.light-theme .language-menu button:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Стилі для соціальних іконок */
+    .socials {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+    
+    .socials a {
+      font-size: 24px;
+      color: white;
+      text-decoration: none;
+      transition: transform 0.3s, color 0.3s;
+    }
+    
+    .socials a:hover {
+      transform: scale(1.2);
+      color: #aaf;
+    }
+    
+    body.light-theme .socials a {
+      color: #333;
+    }
+    
+    body.light-theme .socials a:hover {
+      color: #007bff;
+    }
+    
+    /* Стилі для списку навичок */
+    .skills-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 0;
+      list-style-type: none;
+    }
+    
+    .skills-list li {
+      padding: 15px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      text-align: center;
+      transition: transform 0.3s, background-color 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .skills-list li:hover {
+      transform: translateY(-5px);
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    body.light-theme .skills-list li {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    body.light-theme .skills-list li:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .skill-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    
+    .skill-category {
+      display: block;
+      font-size: 0.8em;
+      opacity: 0.7;
+      margin-top: 5px;
+    }
+    
+    /* Стилі для карусельного відображення досвіду */
+    .experience-carousel {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .experience-grid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      height: 300px; /* Фіксована висота для карусельки */
+    }
+    
+    .experience-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      width: 250px;
+      transition: all 0.3s ease;
+    }
+    
+    .experience-item img {
+      max-width: 120px;
+      max-height: 120px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+    
+    .experience-item h3 {
+      margin: 10px 0 5px;
+      font-size: 1.3em;
+    }
+    
+    .experience-item p {
+      margin: 5px 0 0;
+      opacity: 0.8;
+    }
+    
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      font-size: 20px;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    
+    .carousel-arrow:hover {
+      opacity: 1;
+    }
+    
+    .carousel-arrow.prev {
+      left: 10px;
+    }
+    
+    .carousel-arrow.next {
+      right: 10px;
+    }
+    
+    body.light-theme .carousel-arrow {
+      background: rgba(255, 255, 255, 0.8);
+      color: black;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Стилі для індикації позиції в карусельці */
+    .carousel-indicators {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+    
+    .carousel-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .carousel-indicator.active {
+      background: rgba(255, 255, 255, 0.8);
+    }
+    
+    body.light-theme .carousel-indicator {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    
+    body.light-theme .carousel-indicator.active {
+      background: rgba(0, 0, 0, 0.6);
+    }
+    
+    /* Змінений стиль для заголовка з описом */
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .hero-subtitle {
+      margin-top: 5px;
+      margin-bottom: 15px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas-portfolio"></div>
+  <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+  <button class="language-toggle" onclick="toggleLanguageMenu()">🌐</button>
+  <div class="language-menu" id="languageMenu">
+    <button onclick="changeLanguage('uk')">Українська</button>
+    <button onclick="changeLanguage('ru')">Русский</button>
+    <button onclick="changeLanguage('en')">English</button>
+  </div>
+  <header class="hero">
+    <div class="overlay">
+      <div class="hero-content">
+        <h1 class="glow-text" data-text="GM, I am A1x" data-uk="Привіт, я — A1x" data-ru="Привет, я — A1x" data-en="GM, I am — A1x">GM, I am — A1x</h1>
+        <p class="hero-subtitle glow-text" data-text="Moderator, CM, Ambassador" data-uk="Модератор, Комьюніті Менеджер, Абмасадор" data-ru="Модератор, Комьюнити Менеджер, Амбассадор" data-en="Moderator, CM, Ambassador">Moderator, CM, Ambassador</p>
+      </div>
+      <div class="socials">
+        <a href="https://t.me/A1xcl" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+        <a href="https://x.com/0xA1xcl" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://medium.com/@a1xcryptofury" target="_blank" title="Medium"><i class="fab fa-medium"></i></a>
+        <a href="mailto:a1xcryptofury@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </header>
+  <section class="about">
+    <h2 class="glow-text" data-text="Про мене" data-uk="Про мене" data-ru="Обо мне" data-en="About me">About me</h2>
+    <p class="glow-text" data-text="Я займаюся розвитком криптопроєктів та спільнот. Маю досвід у модерації, управлінні Discord та Telegram-каналами, а також участі в амбасадорських програмах.
+
+    Вмію працювати з аудиторією, організовувати процеси та підтримувати активність у проєктах. Також беру участь у розробці креативних ідей, дизайну та автоматизації через боти.
+    
+    Постійно розвиваюся у сфері Web3 та прагну робити свій внесок у сильні криптоспільноти." data-uk="Я займаюся розвитком криптопроєктів та спільнот. Маю досвід у модерації, управлінні Discord та Telegram-каналами, а також участі в амбасадорських програмах.
+
+    Вмію працювати з аудиторією, організовувати процеси та підтримувати активність у проєктах. Також беру участь у розробці креативних ідей, дизайну та автоматизації через боти.
+    
+    Постійно розвиваюся у сфері Web3 та прагну робити свій внесок у сильні криптоспільноти." data-ru="Я занимаюсь развитием криптопроектов и сообществ. Имею опыт в модерации, управлении Discord и Telegram-каналами, а также участии в амбассадорских программах.
+
+    Умею взаимодействовать с аудиторией, организовывать процессы и поддерживать активность в проектах. Также участвую в разработке креативных идей, дизайне и автоматизации через ботов.
+    
+    Постоянно развиваюсь в сфере Web3 и стремлюсь вносить свой вклад в сильные криптосообщества." data-en="I work on developing crypto projects and communities. I have experience in moderation, managing Discord and Telegram channels, and participating in ambassador programs.
+
+    I know how to engage audiences, organize processes, and keep projects active. I also contribute to creative ideas, design, and automation through bots.
+    
+    I'm constantly growing in the Web3 space and aim to contribute to strong crypto communities.">I work on developing crypto projects and communities. I have experience in moderation, managing Discord and Telegram channels, and participating in ambassador programs.
+
+    I know how to engage audiences, organize processes, and keep projects active. I also contribute to creative ideas, design, and automation through bots.
+    
+    I'm constantly growing in the Web3 space and aim to contribute to strong crypto communities.</p>
+  </section>
+  <section class="experience">
+    <h2 class="glow-text" data-text="Досвід" data-uk="Досвід" data-ru="Опыт" data-en="Experience">Experience</h2>
+    <div class="experience-carousel">
+      <button class="carousel-arrow prev" onclick="changeExperienceSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+      <div class="experience-grid" id="experienceGrid">
+        <div class="experience-item">
+          <img src="reddio.png" alt="Reddio Logo" />
+          <h3 class="glow-text" data-text="Reddio" data-uk="Reddio" data-ru="Reddio" data-en="Reddio">Reddio</h3>
+          <p class="glow-text" data-text="Contributor" data-uk="Contributor" data-ru="Contributor" data-en="Contributor">Contributor</p>
+        </div>
+      </div>
+      <button class="carousel-arrow next" onclick="changeExperienceSlide(1)"><i class="fas fa-chevron-right"></i></button>
+      <div class="carousel-indicators" id="carouselIndicators">
+        <span class="carousel-indicator active" onclick="goToExperienceSlide(0)"></span>
+      </div>
+    </div>
+  </section>
+  <!-- Оновлений фрагмент HTML для секції навичок -->
+  <section class="skills">
+    <h2 class="glow-text" data-text="Навички" data-uk="Навички" data-ru="Навыки" data-en="Skills">Skills</h2>
+    <ul class="skills-list">
+      <li class="glow-text skill-item" data-text="Discord Адміністрування" data-uk="Discord Адміністрування" data-ru="Discord Администрирование" data-en="Discord Administration">
+        <i class="fab fa-discord skill-icon"></i>
+        <span>Discord Administration</span>
+        <span class="skill-category" data-uk="Налаштування ботів та прав доступу" data-ru="Настройка ботов и прав доступа" data-en="Bot setup and permission management">Bot setup and permission management</span>
+      </li>
+      <li class="glow-text skill-item" data-text="Інтеграція Вебхуків" data-uk="Інтеграція Вебхуків" data-ru="Интеграция Вебхуков" data-en="Webhook Integration">
+        <i class="fas fa-plug skill-icon"></i>
+        <span>Webhook Integration</span>
+        <span class="skill-category" data-uk="Автоматизація та інтеграція" data-ru="Автоматизация и интеграция" data-en="Automation and integration">Automation and integration</span>
+      </li>
+      <li class="glow-text skill-item" data-text="Telegram Боти" data-uk="Telegram Боти" data-ru="Telegram Боты" data-en="Telegram Bots">
+        <i class="fab fa-telegram-plane skill-icon"></i>
+        <span>Telegram Bots</span>
+        <span class="skill-category" data-uk="Розробка та налаштування" data-ru="Разработка и настройка" data-en="Development and configuration">Development and configuration</span>
+      </li>
+      <li class="glow-text skill-item" data-text="Графічний Дизайн" data-uk="Графічний Дизайн" data-ru="Графический Дизайн" data-en="Graphic Design">
+        <i class="fas fa-palette skill-icon"></i>
+        <span>Graphic Design</span>
+        <span class="skill-category" data-uk="Adobe Photoshop" data-ru="Adobe Photoshop" data-en="Adobe Photoshop">Adobe Photoshop</span>
+      </li>
+      <li class="glow-text skill-item" data-text="Копірайтинг" data-uk="Копірайтинг" data-ru="Копирайтинг" data-en="Copywriting">
+        <i class="fas fa-pen-fancy skill-icon"></i>
+        <span>Copywriting</span>
+        <span class="skill-category" data-uk="Написання контенту для соцмереж" data-ru="Написание контента для соцсетей" data-en="Social media content writing">Social media content writing</span>
+      </li>
+      <li class="glow-text skill-item" data-text="Web3 Амбасадорство" data-uk="Web3 Амбасадорство" data-ru="Web3 Амбассадорство" data-en="Web3 Ambassador">
+        <i class="fas fa-globe skill-icon"></i>
+        <span>Web3 Ambassador</span>
+        <span class="skill-category" data-uk="Представництво та промоція" data-ru="Представительство и промоция" data-en="Representation and promotion">Representation and promotion</span>
+      </li>
+      <li class="glow-text skill-item" data-text="Модерація Спільнот" data-uk="Модерація Спільнот" data-ru="Модерация Сообществ" data-en="Community Moderation">
+        <i class="fas fa-users-cog skill-icon"></i>
+        <span>Community Moderation</span>
+        <span class="skill-category" data-uk="Управління онлайн-спільнотами" data-ru="Управление онлайн-сообществами" data-en="Online community management">Online community management</span>
+      </li>
+      <li class="glow-text skill-item" data-text="Організація Івентів" data-uk="Організація Івентів" data-ru="Организация Ивентов" data-en="Event Organization">
+        <i class="fas fa-calendar-alt skill-icon"></i>
+        <span>Event Organization</span>
+        <span class="skill-category" data-uk="Онлайн та офлайн заходи" data-ru="Онлайн и офлайн мероприятия" data-en="Online and offline events">Online and offline events</span>
+      </li>
+    </ul>
+  </section>
+  <section class="motivation">
+    <h2 class="glow-text" data-text="Мотивація" data-uk="Мотивація" data-ru="Мотивация" data-en="Motivation">Motivation</h2>
+    <p class="glow-text" data-text="&quot;Завжди прагну створювати щось унікальне та значуще.&quot;" data-uk="&quot;Завжди прагну створювати щось унікальне та значуще.&quot;" data-ru="&quot;Всегда стремлюсь создавать что-то уникальное и значимое.&quot;" data-en="&quot;I always strive to create something unique and meaningful.&quot;">I always strive to create something unique and meaningful.</p>
+  </section>
+  <footer>
+    <p class="glow-text" data-text="© 2025 A1x. Всі права захищені." data-uk="© 2025 A1x. Всі права захищені." data-ru="© 2025 A1x. Все права защищены." data-en="© 2025 A1x. All rights reserved.">&copy; 2025 A1x. All rights reserved.</p>
+    <p class="glow-text" data-text="a1xcryptofury@gmail.com" data-uk="a1xcryptofury@gmail.com" data-ru="a1xcryptofury@gmail.com" data-en="a1xcryptofury@gmail.com"><a href="mailto:a1xcryptofury@gmail.com">a1xcryptofury@gmail.com</a></p>
+  </footer>
+  <script>
+    // Змінні для роботи з каруселькою досвіду
+    let currentExperienceSlide = 0;
+    const experienceItems = [
+      {
+        image: "reddio.png",
+        title: "Reddio",
+        position: "Contributor"
+      }
+      // Тут можна додати інші компанії коли вони з'являться
+    ];
+    
+    // Функція перемикання теми
+    function toggleTheme() {
+      document.body.classList.toggle('light-theme');
+      updateTextDataAttributes();
+    }
+    
+    // Функція відображення/приховування меню вибору мови
+    function toggleLanguageMenu() {
+      const menu = document.getElementById('languageMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+    
+    // Функція зміни мови
+    function changeLanguage(lang) {
+      console.log("Мова перемкнута на:", lang);
+      document.documentElement.lang = lang;
+      
+      // Оновлюємо текст відповідно до обраної мови
+      document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+        const text = el.getAttribute(`data-${lang}`);
+        if (text) {
+          // Для елементів навичок зі skill-category, оновлюємо тільки текст самого елемента
+          if (el.classList.contains('skill-item')) {
+            // Знаходимо span, який містить заголовок навички (перший span)
+            const skillTitle = el.querySelector('span:not(.skill-category)');
+            if (skillTitle) {
+              skillTitle.textContent = text;
+            }
+          } 
+          // Для категорій навичок
+          else if (el.classList.contains('skill-category')) {
+            el.textContent = text;
+          } 
+          // Всі інші елементи
+          else {
+            el.textContent = text;
+            el.setAttribute('data-text', text);
+          }
+        }
+      });
+      
+      // Закриваємо меню мов після вибору
+      document.getElementById('languageMenu').style.display = 'none';
+    }
+    
+    // Функція для оновлення атрибутів при зміні теми
+    function updateTextDataAttributes() {
+      document.querySelectorAll('.glow-text').forEach(el => {
+        if (!el.querySelector('.skill-category')) {
+          const currentContent = el.textContent;
+          el.setAttribute('data-text', currentContent);
+        }
+      });
+    }
+    
+    // Функція для підсвічування тексту при наведенні курсора
+    document.addEventListener('mousemove', e => {
+      document.querySelectorAll('.glow-text').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty('--x', `${x}px`);
+        el.style.setProperty('--y', `${y}px`);
+      });
+    });
+    
+    // Закриття меню мов при кліку поза ним
+    document.addEventListener('click', (e) => {
+      const languageMenu = document.getElementById('languageMenu');
+      const languageToggle = document.querySelector('.language-toggle');
+      
+      if (languageMenu.style.display === 'flex' && 
+          e.target !== languageMenu && 
+          !languageMenu.contains(e.target) && 
+          e.target !== languageToggle) {
+        languageMenu.style.display = 'none';
+      }
+    });
+    
+    // Функція для зміни слайду у карусельці досвіду
+    function changeExperienceSlide(direction) {
+      const newIndex = currentExperienceSlide + direction;
+      
+      // Перевірка, чи є тільки один елемент
+      if (experienceItems.length <= 1) {
+        return; // Якщо тільки один елемент, стрілки неактивні
+      }
+      
+      // Циклічне прокручування
+      if (newIndex < 0) {
+        currentExperienceSlide = experienceItems.length - 1;
+      } else if (newIndex >= experienceItems.length) {
+        currentExperienceSlide = 0;
+      } else {
+        currentExperienceSlide = newIndex;
+      }
+      
+      updateExperienceCarousel();
+      updateCarouselIndicators();
+    }
+    
+    // Функція для переходу на конкретний слайд
+    function goToExperienceSlide(index) {
+      if (index >= 0 && index < experienceItems.length) {
+        currentExperienceSlide = index;
+        updateExperienceCarousel();
+        updateCarouselIndicators();
+      }
+    }
+    
+    // Функція для оновлення вмісту карусельки досвіду
+    function updateExperienceCarousel() {
+      // Ця функція буде використовуватись, коли буде більше одного елемента
+      // Для зараз одного елемента ми просто центруємо його через CSS
+    }
+    
+    // Функція для оновлення індикаторів карусельки
+    function updateCarouselIndicators() {
+      const indicators = document.querySelectorAll('.carousel-indicator');
+      indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === currentExperienceSlide);
+      });
+    }
+    
+    // Приховуємо стрілки карусельки, якщо є тільки один елемент
+    function updateCarouselArrows() {
+      const arrows = document.querySelectorAll('.carousel-arrow');
+      if (experienceItems.length <= 1) {
+        arrows.forEach(arrow => arrow.style.display = 'none');
+      } else {
+        arrows.forEach(arrow => arrow.style.display = 'flex');
+      }
+    }
+    
+    // Ініціалізація сторінки
+    document.addEventListener('DOMContentLoaded', () => {
+      updateTextDataAttributes();
+      updateCarouselArrows(); // Приховуємо стрілки, якщо потрібно
+      updateCarouselIndicators(); // Оновлюємо індикатори
+    });
+  </script>
+</body>
+</html>
